@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔮 Oráculo de la Suerte</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔮 Oráculo de la Suerte</h1>
+            <p>Un juego místico de cartas que predice tu destino</p>
+        </header>
+
+        <div class="controls">
+            <button id="newGameBtn" class="btn btn-primary">🎮 Nuevo Juego</button>
+            <button id="autoPlayBtn" class="btn btn-secondary" disabled>⚡ Modo Automático</button>
+            <button id="stopAutoBtn" class="btn btn-danger" disabled style="display: none;">⏹️ Detener Auto</button>
+            <div class="speed-control">
+                <label for="autoSpeed">Velocidad:</label>
+                <input type="range" id="autoSpeed" min="500" max="3000" value="1500" step="250">
+                <span id="speedValue">1.5s</span>
+            </div>
+        </div>
+
+        <div class="game-info">
+            <div class="status-panel">
+                <div class="status-item">
+                    <span class="label">Estado:</span>
+                    <span id="gameStatus" class="value">Esperando...</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Movimientos:</span>
+                    <span id="movesCount" class="value">0</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Grupo actual:</span>
+                    <span id="currentGroup" class="value">-</span>
+                </div>
+            </div>
+            
+            <div class="instruction-panel">
+                <div id="instruction" class="instruction">
+                    Inicia un nuevo juego para comenzar tu consulta al oráculo
+                </div>
+            </div>
+        </div>
+
+        <div class="game-board">
+            <!-- Square layout with K in center -->
+            <!-- Top row: A(1), 2, 3, 4 -->
+            <div class="groups-row">
+                <div class="group" data-group="1">
+                    <div class="group-header">A (1)</div>
+                    <div class="cards-pile" id="group-1"></div>
+                    <div class="card-count">0</div>
+                </div>
+                <div class="group" data-group="2">
+                    <div class="group-header">2</div>
+                    <div class="cards-pile" id="group-2"></div>
+                    <div class="card-count">0</div>
+                </div>
+                <div class="group" data-group="3">
+                    <div class="group-header">3</div>
+                    <div class="cards-pile" id="group-3"></div>
+                    <div class="card-count">0</div>
+                </div>
+                <div class="group" data-group="4">
+                    <div class="group-header">4</div>
+                    <div class="cards-pile" id="group-4"></div>
+                    <div class="card-count">0</div>
+                </div>
+            </div>
+
+            <!-- Middle rows with K in center -->
+            <div class="groups-row">
+                <div class="group" data-group="12">
+                    <div class="group-header">Q (12)</div>
+                    <div class="cards-pile" id="group-12"></div>
+                    <div class="card-count">0</div>
+                </div>
+                <div class="spacer"></div>
+                <div class="group center" data-group="13">
+                    <div class="group-header">K (13)</div>
+                    <div class="cards-pile" id="group-13"></div>
+                    <div class="card-count">0</div>
+                </div>
+                <div class="spacer"></div>
+                <div class="group" data-group="5">
+                    <div class="group-header">5</div>
+                    <div class="cards-pile" id="group-5"></div>
+                    <div class="card-count">0</div>
+                </div>
+            </div>
+
+            <div class="groups-row">
+                <div class="group" data-group="11">
+                    <div class="group-header">J (11)</div>
+                    <div class="cards-pile" id="group-11"></div>
+                    <div class="card-count">0</div>
+                </div>
+                <div class="spacer"></div>
+                <div class="spacer"></div>
+                <div class="spacer"></div>
+                <div class="group" data-group="6">
+                    <div class="group-header">6</div>
+                    <div class="cards-pile" id="group-6"></div>
+                    <div class="card-count">0</div>
+                </div>
+            </div>
+
+            <!-- Bottom row: 10, 9, 8, 7 -->
+            <div class="groups-row">
+                <div class="group" data-group="10">
+                    <div class="group-header">10</div>
+                    <div class="cards-pile" id="group-10"></div>
+                    <div class="card-count">0</div>
+                </div>
+                <div class="group" data-group="9">
+                    <div class="group-header">9</div>
+                    <div class="cards-pile" id="group-9"></div>
+                    <div class="card-count">0</div>
+                </div>
+                <div class="group" data-group="8">
+                    <div class="group-header">8</div>
+                    <div class="cards-pile" id="group-8"></div>
+                    <div class="card-count">0</div>
+                </div>
+                <div class="group" data-group="7">
+                    <div class="group-header">7</div>
+                    <div class="cards-pile" id="group-7"></div>
+                    <div class="card-count">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="messages">
+            <div id="messageArea" class="message-area"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
