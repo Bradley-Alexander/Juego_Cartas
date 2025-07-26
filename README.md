@@ -29,11 +29,20 @@ El **Oráculo de la Suerte** es un juego de cartas basado en una baraja francesa
 
 ### 🏆 Condiciones de Victoria y Derrota
 
-**Victoria**: Todas las cartas están correctamente ordenadas en sus grupos correspondientes
+**Victoria**: 
+- Se gana ÚNICAMENTE cuando TODOS los 13 grupos están completamente ordenados
+- Cada grupo debe tener exactamente sus 4 cartas correspondientes (ejemplo: grupo 1 con 4 Ases, grupo 13 con 4 Reyes)
+- No basta con que las cartas estén en el grupo correcto, deben estar TODAS las cartas de cada tipo en su grupo
 
 **Derrota**:
-- **Bloqueo**: Un grupo está vacío cuando se intenta sacar una carta
-- **Auto-loop**: La carta revelada corresponde al mismo grupo y ya no hay más cartas
+- **Bloqueo por grupo vacío**: Un grupo está vacío cuando se intenta sacar una carta
+- **Auto-loop simple**: La carta revelada apunta al mismo grupo y es la única carta restante
+- **Bucle infinito por ordenamiento completo**: Si un grupo ya está completamente ordenado (tiene sus 4 cartas correctas) y la carta actual apunta al mismo grupo, se crea un bucle infinito que impide continuar ordenando otros grupos. En este caso el juego termina automáticamente con derrota.
+
+**Indicadores Visuales**:
+- ✓ **Verde**: Grupos completamente ordenados (4 cartas correctas)
+- ◐ **Naranja**: Grupos parcialmente ordenados (algunas cartas correctas)
+- **Normal**: Grupos sin ordenar o con cartas incorrectas
 
 ### 🎯 Modalidades de Juego
 

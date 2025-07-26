@@ -234,6 +234,7 @@ class OracleGame {
             
             // Highlight current and target groups
             groupElement.classList.remove('current', 'target');
+            
             if (parseInt(groupNum) === this.currentState.current_group) {
                 groupElement.classList.add('current');
             }
@@ -307,7 +308,7 @@ class OracleGame {
             const card = this.currentState.current_card;
             instruction = `El oráculo revela: ${card.display} - Muévela del grupo ${this.currentState.current_group} al grupo ${this.currentState.target_group}`;
         } else if (this.currentState.game_state === 'victory') {
-            instruction = '🎉 ¡Has dominado completamente el oráculo! Las cartas han revelado su sabiduría';
+            instruction = '🎉 ¡Has dominado completamente el oráculo! Todos los grupos están perfectamente ordenados';
         } else if (this.currentState.game_state === 'defeat') {
             instruction = `💀 El oráculo se ha cerrado: ${this.currentState.defeat_reason}`;
         }
