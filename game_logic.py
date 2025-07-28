@@ -2,15 +2,30 @@ import random
 from typing import List, Tuple, Dict, Optional
 
 class Card:
+    """
+    Representa una carta individual del mazo.
+    Cada carta tiene un palo, rango y valor numérico para el juego.
+    """
     def __init__(self, suit: str, rank: str, value: int):
+        """
+        Inicializa una carta con palo, rango y valor.
+        suit: Símbolo del palo (♠, ♥, ♦, ♣)
+        rank: Rango de la carta (A, 2-10, J, Q, K)
+        value: Valor numérico (1-13) para determinar el grupo destino
+        """
         self.suit = suit
         self.rank = rank
         self.value = value
     
     def __repr__(self):
+        """Representación en string de la carta para debugging."""
         return f"{self.rank}{self.suit}"
     
     def to_dict(self):
+        """
+        Convierte la carta a diccionario para envío JSON al frontend.
+        Incluye toda la información necesaria para mostrar la carta.
+        """
         return {
             'suit': self.suit,
             'rank': self.rank,
@@ -19,18 +34,29 @@ class Card:
         }
 
 class OracleGame:
+    """
+    Clase principal que maneja toda la lógica del Oráculo de las Cartas.
+    Controla el estado del juego, movimientos, y condiciones de victoria/derrota.
+    """
     def __init__(self):
-        self.deck = []
-        self.groups = {}  # 1-13: groups arranged in square with K(13) in center
-        self.current_group = 13  # Start from center (K)
-        self.game_state = "waiting"  # waiting, playing, victory, defeat
-        self.defeat_reason = ""
-        self.moves_history = []
-        self.current_card = None
-        self.target_group = None
+        """
+        Inicializa un nuevo juego con estado por defecto.
+        Las cartas se organizan en 13 grupos dispuestos en cuadrado con K en el centro.
+        """
+        self.deck = []                    # Mazo de 52 cartas
+        self.groups = {}                  # 1-13: grupos dispuestos en cuadrado con K(13) en el centro
+        self.current_group = 13           # Empezar desde el centro (K)
+        self.game_state = "waiting"       # Estados: waiting, playing, victory, defeat
+        self.defeat_reason = ""           # Razón específica de la derrota
+        self.moves_history = []           # Historial de movimientos realizados
+        self.current_card = None          # Carta actual que se debe mover
+        self.target_group = None          # Grupo destino de la carta actual
         
     def create_deck(self):
-        """Create a standard 52-card deck"""
+        """
+        Crea un mazo estándar de 52 cartas.
+        Incluye 4 palos con 13 cartas cada uno (A=1, 2-10, J=11, Q=12, K=13).
+        """
         suits = ['♠', '♥', '♦', '♣']
         ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
         values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
@@ -41,18 +67,21 @@ class OracleGame:
                 self.deck.append(Card(suit, rank, value))
     
     def shuffle_deck(self):
-        """Realistic shuffle - not perfectly alternated"""
-        # Simulate multiple riffle shuffles
+        """
+        Simula un mezclado realista del mazo.
+        Realiza múltiples mezclas tipo riffle para obtener una distribución natural.
+        """
+        # Simular múltiples mezclas riffle
         for _ in range(random.randint(5, 8)):
-            # Split deck roughly in half
+            # Dividir el mazo aproximadamente por la mitad
             split_point = random.randint(20, 32)
             left_half = self.deck[:split_point]
             right_half = self.deck[split_point:]
             
-            # Riffle shuffle with some imperfection
+            # Mezcla riffle con alguna imperfección para realismo
             shuffled = []
             while left_half or right_half:
-                # Randomly choose which half to take from
+                # Elegir aleatoriamente de qué mitad tomar
                 if not left_half:
                     shuffled.extend(right_half)
                     break
@@ -60,7 +89,7 @@ class OracleGame:
                     shuffled.extend(left_half)
                     break
                 else:
-                    # Take 1-3 cards from one side
+                    # Tomar 1-3 cartas de un lado
                     take_from_left = random.choice([True, False])
                     cards_to_take = random.randint(1, 3)
                     
@@ -76,10 +105,13 @@ class OracleGame:
             self.deck = shuffled
     
     def deal_cards(self):
-        """Deal cards into 13 groups of 4 cards each"""
+        """
+        Reparte las cartas en 13 grupos de 4 cartas cada uno.
+        Cada grupo representa una posición en el cuadrado mágico del oráculo.
+        """
         self.groups = {i: [] for i in range(1, 14)}
         
-        # Deal 4 cards to each group
+        # Repartir 4 cartas a cada grupo
         card_index = 0
         for group in range(1, 14):
             for _ in range(4):
@@ -88,7 +120,10 @@ class OracleGame:
                     card_index += 1
     
     def start_game(self):
-        """Initialize and start a new game"""
+        """
+        Inicializa y comienza una nueva partida.
+        Crea el mazo, lo mezcla, reparte las cartas e inicia el juego.
+        """
         self.create_deck()
         self.shuffle_deck()
         self.deal_cards()
@@ -108,7 +143,10 @@ class OracleGame:
             self.defeat_reason = "Centro vacío al iniciar"
     
     def get_current_state(self):
-        """Get current game state for frontend"""
+        """
+        Obtiene el estado completo del juego para enviar al frontend.
+        Incluye información detallada de todos los grupos, cartas y estadísticas.
+        """
         groups_data = {}
         for group_num, cards in self.groups.items():
             groups_data[group_num] = {
@@ -132,7 +170,10 @@ class OracleGame:
         }
     
     def is_valid_move(self, from_group: int, to_group: int) -> Tuple[bool, str]:
-        """Check if a move is valid"""
+        """
+        Valida si un movimiento propuesto es legal según las reglas del oráculo.
+        Verifica que el juego esté activo, el grupo origen correcto y que haya cartas.
+        """
         if self.game_state != "playing":
             return False, "El juego no está en curso"
         
@@ -149,19 +190,23 @@ class OracleGame:
         return True, ""
     
     def make_move(self, from_group: int, to_group: int, is_auto: bool = False) -> Tuple[bool, str]:
-        """Execute a move"""
+        """
+        Ejecuta un movimiento de carta de un grupo a otro.
+        Actualiza el estado del juego y verifica condiciones de victoria/derrota.
+        is_auto: Si es True, salta la validación (para modo automático)
+        """
         if not is_auto:
             valid, message = self.is_valid_move(from_group, to_group)
             if not valid:
                 return False, message
         
-        # Get the card
+        # Obtener la carta del grupo origen
         card = self.groups[from_group].pop(0)
         
-        # Add to target group (at the bottom)
+        # Agregar al grupo destino (al final de la pila)
         self.groups[to_group].append(card)
         
-        # Record the move
+        # Registrar el movimiento en el historial
         move = {
             'from_group': from_group,
             'to_group': to_group,
@@ -170,17 +215,17 @@ class OracleGame:
         }
         self.moves_history.append(move)
         
-        # Update current position
+        # Actualizar posición actual
         self.current_group = to_group
         
-        # Check for game end conditions
+        # Verificar condiciones de fin de juego
         if self.check_victory():
             self.game_state = "victory"
             self.current_card = None
             self.target_group = None
             return True, "¡Victoria! Todas las cartas están ordenadas correctamente."
         
-        # Check for defeat conditions
+        # Verificar condiciones de derrota
         defeat_reason = self.check_defeat()
         if defeat_reason:
             self.game_state = "defeat"
@@ -212,16 +257,19 @@ class OracleGame:
         return True, "Movimiento exitoso"
     
     def check_victory(self) -> bool:
-        """Check if player has won - ALL groups must have their correct cards"""
-        # Victory: ALL cards are in their correct groups (complete sorting)
+        """
+        Verifica si el jugador ha ganado.
+        Victoria: TODOS los grupos deben tener exactamente sus 4 cartas correctas.
+        """
+        # Victoria: TODAS las cartas están en sus grupos correctos (ordenamiento completo)
         for group_num in range(1, 14):
             group_cards = self.groups[group_num]
             
-            # Each group must have exactly 4 cards of the correct value
+            # Cada grupo debe tener exactamente 4 cartas del valor correcto
             if len(group_cards) != 4:
                 return False
             
-            # All cards in the group must have the correct value
+            # Todas las cartas del grupo deben tener el valor correcto
             for card in group_cards:
                 if card.value != group_num:
                     return False
@@ -229,20 +277,24 @@ class OracleGame:
         return True
     
     def check_defeat(self) -> Optional[str]:
-        """Check for defeat conditions"""
-        # Check if current group is empty
+        """
+        Verifica condiciones de derrota.
+        Detecta bucles infinitos y situaciones sin salida.
+        """
+        # Verificar si el grupo actual está vacío
         if not self.groups[self.current_group]:
             return f"Grupo {self.current_group} vacío - no hay cartas para mover"
         
         current_card = self.groups[self.current_group][0]
         
-        # Check for infinite loop: if current group is completely sorted and card points to same group
+        # Verificar bucle infinito: si el grupo actual está completamente ordenado 
+        # y la carta apunta al mismo grupo
         if (current_card.value == self.current_group and 
             self.is_group_completely_sorted(self.current_group) and
             not self.all_groups_sorted()):
             return f"Bucle infinito detectado: el grupo {self.current_group} está completamente ordenado pero otros grupos no. ¡Imposible continuar!"
         
-        # Check for auto-loop: card points to same group and it's the only card
+        # Verificar auto-loop: carta apunta al mismo grupo y es la única carta
         if (current_card.value == self.current_group and 
             len(self.groups[self.current_group]) == 1):
             return f"Auto-loop: carta {current_card.rank} apunta al mismo grupo {self.current_group} sin más cartas"
@@ -250,7 +302,10 @@ class OracleGame:
         return None
     
     def is_group_completely_sorted(self, group_num: int) -> bool:
-        """Check if a specific group is completely sorted with all its correct cards"""
+        """
+        Verifica si un grupo específico está completamente ordenado.
+        Un grupo está ordenado si tiene exactamente 4 cartas del valor correcto.
+        """
         group_cards = self.groups[group_num]
         
         # Must have exactly 4 cards
@@ -293,7 +348,10 @@ class OracleGame:
         return None
     
     def get_game_statistics(self) -> Dict:
-        """Get detailed statistics about the current game state"""
+        """
+        Obtiene estadísticas detalladas sobre el estado actual del juego.
+        Incluye información sobre grupos ordenados, cartas en posición correcta, etc.
+        """
         stats = {
             'total_groups': 13,
             'completely_sorted_groups': 0,
@@ -338,7 +396,10 @@ class OracleGame:
         return stats
     
     def auto_play_step(self) -> Tuple[bool, str]:
-        """Execute one step in automatic mode"""
+        """
+        Ejecuta un paso en modo automático.
+        Toma la carta superior del grupo actual y la mueve según las reglas del oráculo.
+        """
         if self.game_state != "playing":
             return False, "El juego no está en curso"
         
@@ -353,7 +414,10 @@ class OracleGame:
         return self.make_move(self.current_group, target, is_auto=True)
     
     def get_next_move_info(self) -> Dict:
-        """Get information about the next move for display"""
+        """
+        Obtiene información sobre el próximo movimiento a realizar.
+        Útil para mostrar indicaciones visuales al jugador.
+        """
         if self.game_state != "playing" or not self.groups[self.current_group]:
             return {}
         

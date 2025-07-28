@@ -3,15 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔮 Oráculo de la Suerte</title>
+    <title>🔮 Oráculo de las Cartas</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🔮 Oráculo de la Suerte</h1>
-            <p>Un juego místico de cartas que predice tu destino</p>
-        </header>
+    <!-- Pantalla de Inicio -->
+    <div id="startScreen" class="screen active">
+        <div class="casino-background">
+            <div class="start-container">
+                <h1 class="pixel-title">ORÁCULO DE LAS CARTAS</h1>
+                <p class="pixel-subtitle">By Bradley Poma</p>
+                
+                <div class="menu-buttons">
+                    <button id="startGameBtn" class="pixel-btn primary">🎮 INICIAR JUEGO</button>
+                    <button id="instructionsBtn" class="pixel-btn secondary">📜 INSTRUCCIONES</button>
+                </div>
+                
+                <div class="casino-decorations">
+                    <div class="casino-lights"></div>
+                    <div class="poker-chips"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Selección de Modo -->
+    <div id="modeScreen" class="screen">
+        <div class="casino-background">
+            <div class="mode-container">
+                <h2 class="pixel-title-small">SELECCIONA TU MODO DE JUEGO</h2>
+                
+                <div class="mode-buttons">
+                    <button id="manualModeBtn" class="pixel-btn mode-btn">
+                        <div class="mode-icon">🎯</div>
+                        <div class="mode-title">MODO MANUAL</div>
+                        <div class="mode-desc">Tú controlas cada movimiento</div>
+                    </button>
+                    
+                    <button id="autoModeBtn" class="pixel-btn mode-btn">
+                        <div class="mode-icon">⚡</div>
+                        <div class="mode-title">MODO AUTOMÁTICO</div>
+                        <div class="mode-desc">El oráculo se mueve solo</div>
+                    </button>
+                </div>
+                
+                <button id="backFromModeBtn" class="pixel-btn back-btn">⬅️ VOLVER</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Pregunta al Oráculo -->
+    <div id="questionScreen" class="screen">
+        <div class="casino-background">
+            <div class="question-container">
+                <h2 class="pixel-title-small">🔮 CONSULTA AL ORÁCULO</h2>
+                
+                <div class="oracle-question-section">
+                    <div class="oracle-intro">
+                        <p>El oráculo de las cartas revelará la respuesta a tu pregunta...</p>
+                        <p><strong>SI GANAS</strong> → La respuesta es <span class="answer-yes">SÍ</span></p>
+                        <p><strong>SI PIERDES</strong> → La respuesta es <span class="answer-no">NO</span></p>
+                    </div>
+                    
+                    <div class="question-input-section">
+                        <label for="oracleQuestion" class="question-label">Escribe tu pregunta:</label>
+                        <textarea 
+                            id="oracleQuestion" 
+                            class="oracle-question-input" 
+                            placeholder="¿Debería...? ¿Es cierto que...? ¿Sucederá...?"
+                            maxlength="200"
+                            rows="3"
+                        ></textarea>
+                        <div class="character-count">
+                            <span id="questionCharCount">0</span>/200 caracteres
+                        </div>
+                        <button type="button" onclick="document.getElementById('oracleQuestion').focus(); document.getElementById('oracleQuestion').value = 'Test de escritura';" 
+                                style="padding: 5px; margin: 5px; background: #e74c3c; color: white; border: none; border-radius: 3px; cursor: pointer;">
+                            🧪 TEST TEXTAREAte
+                        </button>
+                    </div>
+                    
+                    <div class="question-preview" id="questionPreview" style="display: none;">
+                        <h3>Tu pregunta:</h3>
+                        <div class="question-text" id="questionText"></div>
+                        <button id="editQuestionBtn" class="pixel-btn secondary-btn">✏️ EDITAR</button>
+                    </div>
+                    
+                    <button id="confirmQuestionBtn" class="pixel-btn main-btn" disabled>
+                        🔮 CONSULTAR AL ORÁCULO
+                    </button>
+                </div>
+                
+                <button id="backFromQuestionBtn" class="pixel-btn back-btn">⬅️ VOLVER</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Selección de Personaje -->
+    <div id="characterScreen" class="screen">
+        <div class="casino-background">
+            <div class="character-container">
+                <h2 class="pixel-title-small">ELIGE TU AVATAR</h2>
+                
+                <div class="character-grid">
+                    <div class="character-card" data-character="andres">
+                        <div class="character-portrait andres"></div>
+                        <div class="character-name">ING. ANDRÉS</div>
+                        <div class="character-trait">El Sabio</div>
+                    </div>
+                    
+                    <div class="character-card" data-character="bradley">
+                        <div class="character-portrait bradley"></div>
+                        <div class="character-name">BRADLEY</div>
+                        <div class="character-trait">El Creador</div>
+                    </div>
+                    
+                    <div class="character-card" data-character="student">
+                        <div class="character-portrait student"></div>
+                        <div class="character-name">ESTUDIANTE PROMEDIO</div>
+                        <div class="character-trait">El Aprendiz</div>
+                    </div>
+                </div>
+                
+                <button id="backFromCharacterBtn" class="pixel-btn back-btn">⬅️ VOLVER</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Instrucciones -->
+    <div id="instructionsScreen" class="screen">
+        <div class="casino-background">
+            <div class="instructions-container">
+                <h2 class="pixel-title-small">INSTRUCCIONES DEL JUEGO</h2>
+                
+                <div class="instructions-content">
+                    <div class="instruction-section">
+                        <h3>🎯 OBJETIVO</h3>
+                        <p>Organiza todas las cartas en 13 grupos según su valor (A, 2, 3... J, Q, K).</p>
+                    </div>
+                    
+                    <div class="instruction-section">
+                        <h3>🎮 CÓMO JUGAR</h3>
+                        <p>• El oráculo revela una carta y te indica dónde moverla</p>
+                        <p>• En modo manual: haz clic en el grupo destino para mover la carta</p>
+                        <p>• En modo automático: el oráculo se mueve solo</p>
+                    </div>
+                    
+                    <div class="instruction-section">
+                        <h3>🏆 CONDICIONES DE VICTORIA</h3>
+                        <p>Ganas cuando todos los 13 grupos están completamente ordenados con las 4 cartas de cada valor.</p>
+                    </div>
+                    
+                    <div class="instruction-section">
+                        <h3>💀 CONDICIONES DE DERROTA</h3>
+                        <p>Pierdes si el oráculo detecta que es imposible continuar organizando las cartas.</p>
+                    </div>
+                </div>
+                
+                <button id="backFromInstructionsBtn" class="pixel-btn back-btn">⬅️ VOLVER AL MENÚ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Juego -->
+    <div id="gameScreen" class="screen">
+        <div class="game-header">
+            <div class="player-info">
+                <div id="selectedCharacter" class="character-avatar"></div>
+                <div class="player-name" id="playerName">Jugador</div>
+            </div>
+            
+            <h1 class="game-title">🔮 ORÁCULO DE LAS CARTAS</h1>
+            
+            <button id="exitGameBtn" class="pixel-btn exit-btn">🚪 SALIR</button>
+        </div>
+
+        <div class="oracle-question-display" id="oracleQuestionDisplay" style="display: none;">
+            <div class="question-reminder">
+                <h3>🔮 Tu pregunta al oráculo:</h3>
+                <div class="current-question" id="currentQuestionText"></div>
+                <div class="oracle-guidance">
+                    <span class="win-condition">🏆 SI GANAS = SÍ</span>
+                    <span class="lose-condition">💀 SI PIERDES = NO</span>
+                </div>
+            </div>
+        </div>
 
         <div class="controls">
             <button id="newGameBtn" class="btn btn-primary">🎮 Nuevo Juego</button>
@@ -22,6 +201,18 @@
                 <input type="range" id="autoSpeed" min="500" max="3000" value="1500" step="250">
                 <span id="speedValue">1.5s</span>
             </div>
+        </div>
+        
+        <div class="game-extra-controls">
+            <button id="reshuffleBtn" class="extra-btn reshuffle-btn" disabled title="Rebarajear cartas (solo antes del primer movimiento)">
+                🔀 REBARAJEAR
+            </button>
+            <button id="soundToggleBtn" class="extra-btn sound-btn" title="Activar/Desactivar sonidos">
+                🔊
+            </button>
+            <button id="ambientToggleBtn" class="extra-btn sound-btn" title="Activar/Desactivar música ambiental">
+                🎵
+            </button>
         </div>
 
         <div class="game-info">

@@ -1,170 +1,179 @@
-# 🔮 Oráculo de la Suerte
+# 🔮 Oráculo de las Cartas
 
-Un juego web místico de cartas que simula un algoritmo de ordenamiento basado en la posición de las cartas.
+Un juego místico de cartas con diseño pixel art que predice tu destino a través de la organización de un mazo completo.
 
-## 🎮 Descripción del Juego
+## 🎯 Descripción del Juego
 
-El **Oráculo de la Suerte** es un juego de cartas basado en una baraja francesa (52 cartas sin comodín) que se distribuyen en 13 grupos circulares de 4 cartas cada uno. El objetivo es ordenar todas las cartas según un algoritmo específico que simula una consulta al oráculo.
+**Oráculo de las Cartas** es un juego de cartas único donde debes organizar las 52 cartas de una baraja francesa en 13 grupos según su valor. El oráculo revela una carta a la vez y te guía hacia dónde moverla, creando una experiencia mística e interactiva.
 
-### 🃏 Reglas del Juego
+## ✨ Características Principales
 
-1. **Inicio**: Las 52 cartas se distribuyen en 13 grupos de 4 cartas cada uno
-2. **Distribución especial**: Los grupos se organizan en forma de cuadrado con K(13) en el centro:
-   ```
-   ┌─────┬─────┬─────┬─────┐
-   │ A(1)│  2  │  3  │  4  │
-   ├─────┼─────┼─────┼─────┤
-   │Q(12)│     │K(13)│     │ 5
-   ├─────┤     ├─────┤     ├─────┤
-   │J(11)│     │     │     │  6  │
-   ├─────┼─────┼─────┼─────┤
-   │ 10  │  9  │  8  │  7  │
-   └─────┴─────┴─────┴─────┘
-   ```
-3. **Algoritmo**: 
-   - Se inicia con la primera carta del centro (grupo 13 - K)
-   - La carta se voltea y se mueve al grupo correspondiente a su valor (A=1, J=11, Q=12, K=13)
-   - Se coloca debajo de la pila del grupo destino
-   - Se toma la carta superior del grupo destino y se repite el proceso
+### 🎨 Diseño Pixel Art
+- Interfaz completamente rediseñada con estética pixel art
+- Fondo de casino lujoso con efectos visuales
+- Animaciones fluidas y colores vibrantes
+- Tipografía futurista (Orbitron)
 
-### 🏆 Condiciones de Victoria y Derrota
+### 🎮 Sistema de Pantallas
+1. **Pantalla de Inicio**: Menú principal con título llamativo
+2. **Selección de Modo**: Elige entre manual o automático
+3. **Selección de Personaje**: 3 avatares únicos
+4. **Pantalla de Instrucciones**: Reglas detalladas del juego
+5. **Pantalla de Juego**: Interfaz principal de juego
 
-**Victoria**: 
-- Se gana ÚNICAMENTE cuando TODOS los 13 grupos están completamente ordenados
-- Cada grupo debe tener exactamente sus 4 cartas correspondientes (ejemplo: grupo 1 con 4 Ases, grupo 13 con 4 Reyes)
-- No basta con que las cartas estén en el grupo correcto, deben estar TODAS las cartas de cada tipo en su grupo
+### 👥 Personajes Disponibles
+- **Ing. Andrés** 👨‍🏫 - El Sabio
+- **Bradley** 👨‍💻 - El Creador  
+- **Estudiante Promedio** 🎓 - El Aprendiz
 
-**Derrota**:
-- **Bloqueo por grupo vacío**: Un grupo está vacío cuando se intenta sacar una carta
-- **Auto-loop simple**: La carta revelada apunta al mismo grupo y es la única carta restante
-- **Bucle infinito por ordenamiento completo**: Si un grupo ya está completamente ordenado (tiene sus 4 cartas correctas) y la carta actual apunta al mismo grupo, se crea un bucle infinito que impide continuar ordenando otros grupos. En este caso el juego termina automáticamente con derrota.
+### 🎯 Modos de Juego
+- **Modo Manual**: Controlas cada movimiento haciendo clic
+- **Modo Automático**: El oráculo juega automáticamente
 
-**Indicadores Visuales**:
-- ✓ **Verde**: Grupos completamente ordenados (4 cartas correctas)
-- ◐ **Naranja**: Grupos parcialmente ordenados (algunas cartas correctas)
-- **Normal**: Grupos sin ordenar o con cartas incorrectas
-
-### 🎯 Modalidades de Juego
-
-#### 🖱️ Modo Manual
-- El usuario interactúa con la interfaz
-- Solo se permiten movimientos válidos
-- Mensajes de error si se intenta un movimiento incorrecto
-- Indicación visual del grupo actual y destino
-
-#### ⚡ Modo Automático
-- El sistema simula el juego paso a paso
-- Velocidad ajustable (0.5s - 3s por movimiento)
-- Visualización del recorrido completo
-- Indicación de cada paso en pantalla
-
-## 🚀 Instalación y Ejecución
-
-### Requisitos
-- Python 3.7 o superior
-- Flask (se instala automáticamente)
-
-### Pasos para ejecutar
-
-1. **Navegar al directorio del proyecto**:
-   ```bash
-   cd "ruta\al\proyecto\Juego_Cartas"
-   ```
-
-2. **Ejecutar el juego**:
-   ```bash
-   python app.py
-   ```
-
-3. **Abrir en el navegador**:
-   - Ve a: `http://localhost:5000`
-   - El servidor se iniciará automáticamente
-
-### 🛠️ Estructura del Proyecto
+## 🏗️ Estructura del Proyecto
 
 ```
 Juego_Cartas/
-├── app.py              # Servidor Flask principal
-├── game_logic.py       # Lógica interna del juego
-├── static/
-│   ├── style.css       # Estilos CSS
-│   └── script.js       # JavaScript del frontend
+├── app.py                 # Servidor Flask principal
+├── game_logic.py          # Lógica central del juego
 ├── templates/
-│   └── index.html      # Interfaz HTML principal
-└── README.md           # Este archivo
+│   └── index.html         # Interfaz HTML con múltiples pantallas
+├── static/
+│   ├── style.css          # Estilos pixel art y responsive
+│   ├── script.js          # JavaScript para navegación y juego
+│   ├── style_old.css      # Backup del diseño anterior
+│   └── script_old.js      # Backup del JavaScript anterior
+├── test_startup.py        # Script de verificación
+├── test_rules.py          # Pruebas de reglas del juego
+└── README.md              # Este archivo
+```
+
+## 🎲 Reglas del Juego
+
+### 📋 Objetivo
+Organizar todas las 52 cartas en 13 grupos según su valor:
+- Grupo 1: Ases (A)
+- Grupo 2: Doses (2)
+- Grupo 3: Treses (3)
+- ...
+- Grupo 13: Reyes (K) - ubicado en el centro
+
+### 🎯 Cómo Jugar
+1. **Selecciona tu modo** de juego (manual o automático)
+2. **Elige tu personaje** favorito
+3. **El oráculo revela** una carta y te indica dónde moverla
+4. **En modo manual**: Haz clic en el grupo destino
+5. **En modo automático**: Observa mientras el oráculo juega
+
+### 🏆 Condiciones de Victoria
+- **Ganas** cuando todos los 13 grupos están completamente ordenados
+- Cada grupo debe tener las 4 cartas de su valor correspondiente
+
+### 💀 Condiciones de Derrota
+- **Pierdes** si el oráculo detecta que es imposible continuar
+- Esto ocurre cuando se forma un bucle infinito en la configuración
+
+## 🚀 Instalación y Ejecución
+
+### Prerrequisitos
+```bash
+Python 3.7+
+Flask 2.0+
+```
+
+### Pasos de Instalación
+1. **Clona o descarga** el proyecto
+2. **Instala Flask** (si no lo tienes):
+   ```bash
+   pip install flask
+   ```
+3. **Navega** al directorio del juego:
+   ```bash
+   cd Juego_Cartas
+   ```
+4. **Ejecuta** el servidor:
+   ```bash
+   python app.py
+   ```
+5. **Abre** tu navegador en: `http://localhost:5000`
+
+### Verificación del Sistema
+Ejecuta el script de prueba:
+```bash
+python test_startup.py
 ```
 
 ## 🎨 Características Técnicas
 
-### Backend (Python/Flask)
-- **Separación de responsabilidades**: Lógica del juego separada del servidor
-- **API RESTful**: Endpoints para interacción frontend-backend
-- **Barajado realista**: Simulación de múltiples mezclas tipo riffle
-- **Layout cuadrado**: Distribución visual en forma de cuadrado con K en el centro
-- **Algoritmo clásico**: Correspondencia directa valor-grupo (A=1, J=11, Q=12, K=13)
-- **Validación de movimientos**: Control de reglas del juego
+### Frontend
+- **HTML5** con diseño responsive
+- **CSS3** con animaciones y efectos visuales
+- **JavaScript ES6+** con async/await
+- **Sistema de pantallas** con transiciones suaves
 
-### Frontend (HTML/CSS/JavaScript)
-- **Interfaz responsive**: Adaptable a diferentes tamaños de pantalla
-- **Animaciones CSS**: Efectos visuales al mover cartas
-- **Comunicación AJAX**: Llamadas asíncronas al backend
-- **Feedback visual**: Indicadores de grupo actual y destino
+### Backend
+- **Flask** como servidor web
+- **API REST** para comunicación frontend-backend
+- **Lógica de juego** separada en módulo independiente
+- **Detección inteligente** de victoria y derrota
 
-### 🎭 Características Especiales
+### Diseño Visual
+- **Paleta de colores** inspirada en casinos lujosos
+- **Efectos de luz** y animaciones CSS
+- **Tipografía futurista** (Google Fonts - Orbitron)
+- **Responsive design** para móviles y escritorio
 
-1. **Tema Místico**: Diseño inspirado en la cartomancia y el ocultismo
-2. **Efectos Visuales**: Animaciones suaves y efectos de partículas
-3. **Feedback Inmediato**: Mensajes contextuales según el estado del juego
-4. **Control de Velocidad**: Ajuste dinámico en modo automático
-5. **Historial de Movimientos**: Registro completo de todas las jugadas
+## 🎯 API Endpoints
 
-## 🎮 Cómo Jugar
+- `GET /` - Página principal del juego
+- `POST /api/new_game` - Iniciar nueva partida
+- `POST /api/move` - Realizar movimiento manual
+- `POST /api/auto_step` - Paso automático
+- `GET /api/game_state` - Estado actual del juego
 
-1. **Iniciar**: Presiona "🎮 Nuevo Juego" para comenzar
-2. **Modo Manual**: Haz clic en el grupo destino indicado para mover la carta
-3. **Modo Automático**: Presiona "⚡ Modo Automático" para ver la simulación
-4. **Ajustar Velocidad**: Usa el control deslizante para cambiar la velocidad
-5. **Observar**: Sigue las instrucciones del oráculo para entender cada movimiento
+## 🔧 Personalización
 
-## 🔮 Interpretación Mística
+### Agregar Nuevos Personajes
+1. Añade la información en `static/script.js`
+2. Actualiza los estilos CSS correspondientes
+3. Modifica el HTML para incluir el nuevo personaje
 
-El juego representa una consulta al oráculo donde:
-- Cada carta es una pregunta al destino
-- Los grupos representan aspectos de la vida (amor, trabajo, salud, etc.)
-- El algoritmo simula el flujo del destino
-- La victoria significa armonía y orden cósmico
-- La derrota indica bloqueos energéticos o loops kármicos
+### Modificar Velocidad
+- Ajusta el slider en la interfaz
+- Rango: 0.5s - 3.0s por movimiento
 
-## 🐛 Solución de Problemas
+### Cambiar Colores
+- Edita las variables CSS en `static/style.css`
+- Modifica los gradientes y efectos de luz
 
-### Error de Conexión
-- Verifica que el servidor esté ejecutándose
-- Revisa que el puerto 5000 esté disponible
-- Intenta reiniciar el servidor
+## 🐛 Resolución de Problemas
 
-### Juego No Responde
-- Recarga la página del navegador
-- Verifica la consola del navegador (F12) para errores
-- Reinicia el servidor si es necesario
+### El juego no carga
+1. Verifica que Flask esté instalado
+2. Comprueba que el puerto 5000 esté libre
+3. Ejecuta `python test_startup.py` para diagnósticos
 
-### Problemas de Rendimiento
-- Reduce la velocidad del modo automático
-- Cierra otras pestañas del navegador
-- Verifica los recursos del sistema
+### Error de conexión
+1. Revisa la consola del navegador (F12)
+2. Verifica que el servidor Flask esté ejecutándose
+3. Comprueba la URL en el navegador
 
-## 🔧 Desarrollo y Personalización
+### Problemas de diseño
+1. Limpia la caché del navegador (Ctrl+F5)
+2. Verifica que los archivos CSS/JS se carguen correctamente
+3. Revisa la consola por errores de JavaScript
 
-El código está estructurado para facilitar modificaciones:
+## 👨‍💻 Créditos
 
-- **game_logic.py**: Modifica las reglas del juego
-- **style.css**: Cambia la apariencia visual
-- **script.js**: Ajusta la interacción del usuario
-- **app.py**: Añade nuevos endpoints o funcionalidades
+**Desarrollado por:** Bradley Poma  
+**Inspiración:** Juegos clásicos de cartas y casinos  
+**Diseño:** Pixel art y estética retro-futurista  
+**Tecnologías:** Flask, HTML5, CSS3, JavaScript ES6+
 
-## 📝 Licencia
+## 📜 Licencia
 
-Este proyecto es de código abierto y puede ser modificado libremente para uso educativo y personal.
+Este proyecto es de uso educativo y personal. No está destinado para uso comercial.
 
 ---
 
-🌟 **¡Que el oráculo revele tu destino!** 🌟
+🔮 *Que el oráculo guíe tu camino hacia la victoria* ✨

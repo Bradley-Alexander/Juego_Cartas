@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 Prueba Modo Automático</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #1a1a2e;
+            color: white;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #2c3e50;
+            border-radius: 8px;
+        }
+        .success { color: #2ecc71; }
+        .error { color: #e74c3c; }
+        .info { color: #3498db; }
+        button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover { background: #c0392b; }
+    </style>
+</head>
+<body>
+    <h1>🤖 Prueba de Modo Automático</h1>
+    
+    <div class="test-section">
+        <h2>🔧 Pruebas Rápidas</h2>
+        <button onclick="testAutoMode()">🧪 Probar Modo Automático</button>
+        <button onclick="testManualMode()">👆 Probar Modo Manual</button>
+        <button onclick="checkGameState()">📊 Verificar Estado</button>
+        <div id="testResults"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🎮 Simulación Completa</h2>
+        <button onclick="simulateFullAutoGame()">🚀 Simular Partida Automática</button>
+        <div id="simulationResults"></div>
+    </div>
+
+    <script>
+        let testGameManager = null;
+        
+        function log(message, type = 'info') {
+            const results = document.getElementById('testResults');
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
+            results.innerHTML += `<div class="${className}">${new Date().toLocaleTimeString()}: ${message}</div>`;
+        }
+        
+        function logSim(message, type = 'info') {
+            const results = document.getElementById('simulationResults');
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
+            results.innerHTML += `<div class="${className}">${new Date().toLocaleTimeString()}: ${message}</div>`;
+        }
+        
+        function testAutoMode() {
+            document.getElementById('testResults').innerHTML = '';
+            log('🤖 Iniciando prueba de modo automático...');
+            
+            try {
+                // Simular selección de modo automático
+                if (typeof OracleGameManager !== 'undefined') {
+                    testGameManager = new OracleGameManager();
+                    testGameManager.selectedMode = 'auto';
+                    testGameManager.selectedCharacter = 'bradley';
+                    
+                    log('✅ GameManager creado con modo automático', 'success');
+                    
+                    // Simular inicio de juego
+                    const testGame = new OracleGame('auto');
+                    log('✅ OracleGame creado en modo automático', 'success');
+                    log(`🎯 gameMode: ${testGame.gameMode}, isAutoMode: ${testGame.isAutoMode}`);
+                    
+                } else {
+                    log('❌ OracleGameManager no disponible', 'error');
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+        
+        function testManualMode() {
+            document.getElementById('testResults').innerHTML = '';
+            log('👆 Iniciando prueba de modo manual...');
+            
+            try {
+                const testGame = new OracleGame('manual');
+                log('✅ OracleGame creado en modo manual', 'success');
+                log(`🎯 gameMode: ${testGame.gameMode}, isAutoMode: ${testGame.isAutoMode}`);
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+        
+        function checkGameState() {
+            document.getElementById('testResults').innerHTML = '';
+            log('📊 Verificando estado del juego...');
+            
+            fetch('/api/game_state')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        log('✅ Estado del juego obtenido', 'success');
+                        log(`🎮 Estado: ${data.state.game_state}`);
+                        log(`🔢 Movimientos: ${data.state.moves_count}`);
+                        log(`📍 Grupo actual: ${data.state.current_group}`);
+                    } else {
+                        log('❌ Error al obtener estado', 'error');
+                    }
+                })
+                .catch(error => {
+                    log(`❌ Error de conexión: ${error.message}`, 'error');
+                });
+        }
+        
+        async function simulateFullAutoGame() {
+            document.getElementById('simulationResults').innerHTML = '';
+            logSim('🚀 Iniciando simulación completa de partida automática...');
+            
+            try {
+                // 1. Crear nuevo juego
+                logSim('📝 Paso 1: Crear nuevo juego');
+                const newGameResponse = await fetch('/api/new_game', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const newGameData = await newGameResponse.json();
+                
+                if (!newGameData.success) {
+                    logSim('❌ Error al crear nuevo juego', 'error');
+                    return;
+                }
+                
+                logSim('✅ Nuevo juego creado exitosamente', 'success');
+                
+                // 2. Simular modo automático
+                logSim('🤖 Paso 2: Simulando pasos automáticos...');
+                let stepCount = 0;
+                let maxSteps = 100; // Límite de seguridad
+                
+                while (stepCount < maxSteps) {
+                    const stepResponse = await fetch('/api/auto_step', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    const stepData = await stepResponse.json();
+                    
+                    if (!stepData.success) {
+                        logSim(`❌ Error en paso ${stepCount + 1}: ${stepData.message}`, 'error');
+                        break;
+                    }
+                    
+                    stepCount++;
+                    logSim(`📈 Paso ${stepCount}: ${stepData.can_continue ? 'Continúa' : 'Finalizado'}`);
+                    
+                    if (!stepData.can_continue) {
+                        logSim(`🏁 Partida terminada en ${stepCount} pasos`, 'success');
+                        logSim(`🎯 Resultado: ${stepData.state?.game_state || 'Desconocido'}`);
+                        break;
+                    }
+                    
+                    // Pausa pequeña para no saturar
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                
+                if (stepCount >= maxSteps) {
+                    logSim('⚠️ Simulación detenida por límite de pasos', 'error');
+                }
+                
+            } catch (error) {
+                logSim(`❌ Error en simulación: ${error.message}`, 'error');
+            }
+        }
+        
+        // Verificar disponibilidad al cargar
+        window.addEventListener('load', () => {
+            log('🔍 Verificando disponibilidad de componentes...');
+            
+            if (typeof OracleGameManager !== 'undefined') {
+                log('✅ OracleGameManager disponible', 'success');
+            } else {
+                log('⚠️ OracleGameManager no disponible', 'error');
+            }
+            
+            if (typeof OracleGame !== 'undefined') {
+                log('✅ OracleGame disponible', 'success');
+            } else {
+                log('⚠️ OracleGame no disponible', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
