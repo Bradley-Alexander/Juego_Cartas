@@ -1,49 +1,33 @@
-Proyecto "Gamer Store" (Despliegue PaaS en Azure)
+Proyecto "Gamer Store" (Despliegue PaaS en Azure) ☁️
 
-1. Propósito del Sistema
+1. Resumen Técnico
 
-Este proyecto es un sitio web funcional (demo de e-commerce "Gamer Store") desplegado en un entorno PaaS de Microsoft Azure. El objetivo principal es demostrar la migración de una aplicación web a un servicio gestionado (App Service) y la configuración de un flujo de Integración Continua y Despliegue Continuo (CI/CD).
+Este repositorio contiene el código fuente del proyecto "Gamer Store". El propósito principal es demostrar el despliegue de un sitio web en un entorno PaaS (Plataforma como Servicio) gestionado en Microsoft Azure.
 
-Autoría: [Tu Nombre Completo]
+Autoría: Bradley Poma Vera
 
-2. Entorno de Ejecución y Dependencias
+Plataforma: Microsoft Azure
 
-La aplicación se ejecuta en la siguiente infraestructura de nube:
-
-Plataforma: Microsoft Azure (PaaS)
-
-Servicio: Azure App Service
+Servicio: App Service (Web App)
 
 Sistema Operativo: Linux
 
-Stack de Ejecución: Node.js 18 LTS [Ajustar si es otro, ej: .NET, Python, etc.]
+URL de Producción: El sitio está desplegado y accesible públicamente en:
 
-Dependencias del Proyecto:
+https://gamer-btdeabe9e4aybcep.brazilsouth-01.azurewebsites.net/
 
-HTML5
+2. Instrucciones de Despliegue (Integración Continua)
 
-CSS3
+El despliegue de este proyecto está totalmente automatizado utilizando Integración Continua (CI/CD) a través de GitHub Actions.
 
-JavaScript (Frontend)
+No se requiere ningún paso manual para el despliegue.
 
-[Si usaste Node.js, añade: npm (para el servidor web, ej: express)]
+Proceso de Despliegue Automático
 
-3. Instrucciones de Despliegue (CI/CD)
+Disparador (Trigger): El flujo de trabajo de despliegue se activa automáticamente cada vez que se realiza un push o un merge a la rama principal (main o master) de este repositorio.
 
-El despliegue de este proyecto está totalmente automatizado mediante Integración Continua.
+Acción (Action): GitHub Actions toma el código fuente, (lo compila si es necesario) y lo empaqueta.
 
-Disparador (Trigger): El despliegue se inicia automáticamente cada vez que se realiza un push o merge a la rama main (o master) de este repositorio.
+Despliegue (Deploy): Los archivos de la aplicación son desplegados de forma segura en el Azure App Service (gamer-btdeabe9e4aybcep).
 
-Proceso: GitHub Actions se encarga de:
-
-Detectar el cambio.
-
-(Opcional: Construir el proyecto, ej: npm install && npm run build si fuera necesario).
-
-Desplegar los artefactos resultantes en el Azure App Service vinculado.
-
-Acceso: Una vez completado el flujo de trabajo (tarda 1-2 minutos), los cambios están disponibles públicamente en la URL de producción:
-
-URL: httpss://gamer-btdeabe9e4aybcep.brazilsouth-01.azurewebsites.net/
-
-No se requiere ninguna intervención manual para actualizar el sitio en producción.
+Resultado: Los cambios se reflejan en la URL de producción en pocos minutos, sin necesidad de intervención manual.
